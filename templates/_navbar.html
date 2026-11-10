@@ -1,0 +1,26 @@
+{% set ep = request.endpoint or '' %}
+<nav class="navbar navbar-expand navbar-dark bg-primary shadow-sm">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="{{ url_for('dashboard') }}">
+            QL Sách
+        </a>
+
+        <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+                <a class="nav-link {{ 'active' if ep == 'dashboard' }}" href="{{ url_for('dashboard') }}">
+                    Dashboard
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ 'active' if 'danh_muc' in ep }}" href="{{ url_for('xem_danh_muc') }}">
+                    Danh mục
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link {{ 'active' if 'sach' in ep }}" href="{{ url_for('xem_sach') }}">
+                    Sách
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>

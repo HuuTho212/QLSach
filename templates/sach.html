@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Danh sách sách{% endblock %}
+
+{% block content %}
+{% include "_navbar.html" %}
+
+<div class="container py-4">
+    {% include "_flash.html" %}
+
+    <div class="d-flex flex-wrap justify-content-between mb-3">
+        <h2>Danh sách sách</h2>
+        <a href="{{ url_for('them_sach') }}" class="btn btn-primary">Thêm sách</a>
+    </div>
+
+    <form method="get" action="{{ url_for('xem_sach') }}" class="row g-2 align-items-center mb-3">
+        <div class="col-auto">
+            <label for="category_id" class="col-form-label">Lọc theo danh mục:</label>
+        </div>
+        <div class="col-md-4">
+            <select class="form-select" id="category_id" name="category_id">
+                <option value="">-- Tất cả danh mục --</option>
+                {% for c in categories %}
+                    <option value="{{ c.id }}" {{ 'selected' if category_id == c.id }}>{{ c.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-outline-primary">Lọc</button>
+            {% if category_id %}
+                <a href="{{ url_for('xem_sach') }}" class="btn btn-outline-secondary">Bỏ lọc</a>
+            {% endif %}
+        </div>
+    </form>
+
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tiêu đề</th>
+                    <th>Tác giả</th>
+                    <th>Danh mục</th>
+                    <th class="text-end">Giá</th>
+                    <th class="text-center">Số lượng</th>
+                    <th class="text-end">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for b in books %}
+                    <tr>
+                        <td>{{ b.id }}</td>
+                        <td>{{ b.title }}</td>
+                        <td>{{ b.author }}</td>
+                        <td>{{ b.category.name }}</td>
+                        <td class="text-end">{{ "{:,.0f}".format(b.price) | replace(",", ".") }} đ</td>
+                        <td class="text-center">
+                            {% if b.quantity > 0 %}
+                                {{ b.quantity }}
+                            {% else %}
+                                <span class="text-danger">Hết hàng</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-end text-nowrap">
+                            <a href="{{ url_for('sua_sach', id=b.id) }}" class="btn btn-sm btn-primary">Sửa</a>
+                            <form method="post" action="{{ url_for('xoa_sach', id=b.id) }}" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-danger">Xóa</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="7" class="text-center">Chưa có sách nào.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% include "_footer.html" %}
+{% endblock %}

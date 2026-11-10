@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+{% include "_navbar.html" %}
+
+<div class="container py-4">
+    {% include "_flash.html" %}
+
+    <h2 class="mb-3">Dashboard</h2>
+
+    <div class="row g-3 mb-4">
+        <div class="col-md-6">
+            <div class="card card-body">
+                <h5>Tổng danh mục</h5>
+                <p class="display-6 mb-0">{{ tong_danh_muc }}</p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card card-body">
+                <h5>Tổng số sách</h5>
+                <p class="display-6 mb-0">{{ tong_sach }}</p>
+            </div>
+        </div>
+    </div>
+
+    <h4>Số sách theo danh mục</h4>
+    <div class="table-responsive">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Danh mục</th>
+                <th>Số sách</th>
+                <th class="text-end">Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cat_id, cat_name, so_sach in sach_theo_danh_muc %}
+                <tr>
+                    <td>{{ cat_name }}</td>
+                    <td>{{ so_sach }}</td>
+                    <td class="text-end text-nowrap">
+                        <a href="{{ url_for('xem_sach', category_id=cat_id) }}" class="btn btn-sm btn-primary">Xem sách</a>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="3" class="text-center">Chưa có danh mục nào.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+</div>
+
+{% include "_footer.html" %}
+{% endblock %}
